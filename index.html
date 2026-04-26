@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <div class="navbar">
+      <div class="nav-top">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" />
+        <div>
+          <h2>INGLEWOOD ACADEMY</h2>
+          <small style="color: pink">LAGOS NIGERIA</small>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">Online Result</a>
+        <a href="#">School Bill</a>
+        <a href="#">Staff Login</a>
+        <a href="#">Student Login</a>
+        <a href="#">Online Registration</a>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="section">
+      <h3>➤➤ Online Result ➤➤</h3>
+      <div class="mid">Check Mid-Term Result</div>
+
+      <div class="grid">
+        <div class="card">
+          <i class="fas fa-book"></i>
+          <h4>First Term</h4>
+          <a href="dex.html">
+            <button type="button" onclick="openModal('result')">
+              Check Result
+            </button></a
+          >
+        </div>
+
+        <div class="card">
+          <i class="fas fa-chart-bar"></i>
+          <h4>Second Term</h4>
+          <a href="dex.html">
+            <button onclick="openModal('result')">Check Result</button></a
+          >
+        </div>
+
+        <div class="card">
+          <i class="fas fa-crown"></i>
+          <h4>Third Term</h4>
+          <a href="dex.html"
+            ><button onclick="openModal('result')">Check Result</button></a
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- SCHOOL BILL -->
+    <div class="section">
+      <h3>➤➤ School Bill ➤➤</h3>
+
+      <div class="grid">
+        <div class="card">
+          <h4>Newsletter</h4>
+          <button onclick="alert('School newsletter loaded')">Read</button>
+        </div>
+
+        <div class="card">
+          <h4>School Bill</h4>
+          <button onclick="openModal('bill')">View Bill</button>
+        </div>
+
+        <div class="card">
+          <h4>List of Books</h4>
+          <button onclick="showBooks()">View</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CBT -->
+    <div class="section">
+      <h3>➤➤ CBT ➤➤</h3>
+
+      <div class="grid">
+        <div class="card">
+          <h4>Teachers</h4>
+          <button onclick="alert('Teacher CBT panel')">Join Test</button>
+        </div>
+
+        <div class="card">
+          <h4>Students</h4>
+          <button onclick="startCBT()">Join Test</button>
+        </div>
+
+        <div class="card">
+          <h4>Admissions</h4>
+          <button onclick="openModal('register')">Register</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ONLINE CLASS -->
+    <div class="section">
+      <h3>➤➤ Online Class ➤➤</h3>
+
+      <div class="grid">
+        <div class="card">
+          <h4>Teachers</h4>
+          <button onclick="alert('Zoom Link')">Enter</button>
+        </div>
+
+        <div class="card">
+          <h4>Students</h4>
+          <button onclick="alert('Google Meet Link')">Enter</button>
+        </div>
+
+        <div class="card">
+          <h4>Careers</h4>
+          <button onclick="alert('Apply for job')">Apply</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">X</span>
+        <div id="modalBody"></div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

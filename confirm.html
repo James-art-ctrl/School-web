@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirm Request</title>
+
+    <style>
+      body {
+        background: #e6e6e6;
+        font-family: Arial, sans-serif;
+      }
+
+      /* MAIN BOX */
+      .wrapper {
+        width: 600px;
+        margin: 60px auto;
+        background: #cfcfcf;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      /* TOP SECTION */
+      .top {
+        background: #3f4a8a;
+        color: white;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .top h2 {
+        color: yellow;
+        margin-bottom: 5px;
+      }
+
+      .top p {
+        margin: 5px 0;
+      }
+
+      .highlight {
+        color: yellow;
+        text-decoration: underline;
+        font-weight: bold;
+      }
+
+      /* IMAGE */
+      .top img {
+        width: 120px;
+      }
+
+      /* BOTTOM */
+      .bottom {
+        padding: 20px;
+      }
+
+      /* OPTIONS */
+      .option {
+        background: #ddd;
+        padding: 10px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-radius: 4px;
+      }
+
+      .option input {
+        margin-right: 5px;
+      }
+
+      .option.red {
+        color: red;
+      }
+
+      .option.green {
+        color: green;
+      }
+
+      .option.yellow {
+        color: #444;
+      }
+
+      /* BUTTONS */
+      .actions {
+        display: flex;
+        justify-content: center;
+        gap: 50px;
+        margin-top: 25px;
+      }
+
+      .btn {
+        background: #0b8aa8;
+        color: white;
+        border: none;
+        padding: 10px 30px;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        background: #066a82;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- TOP -->
+      <div class="top">
+        <img src="https://cdn-icons-png.flaticon.com/512/1995/1995574.png" />
+
+        <div>
+          <h2>College</h2>
+          <p><b>Please Confirm Your Request:</b></p>
+
+          <p>You are about to check</p>
+          <p>Result of</p>
+
+          <p class="highlight">THIRD TERM</p>
+          <p class="highlight">2024/2025</p>
+          <p>session</p>
+        </div>
+      </div>
+
+      <!-- BOTTOM -->
+      <div class="bottom">
+        <div class="option red">
+          ❌ <input type="radio" name="confirm" />
+          No, this is not the result I want to check
+        </div>
+
+        <div class="option green">
+          ✔ <input type="radio" name="confirm" />
+          Yes, this is the result I want to check
+        </div>
+
+        <div class="option yellow">
+          😕 <input type="radio" name="confirm" />
+          I am not sure yet
+        </div>
+
+        <div class="actions">
+          <a href="index.html"><button class="btn">Cancel</button></a>
+          <a href="yes.html"> <button class="btn">Continue</button></a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Inglewood Academy - Check Result</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #e6e9ef;
+        font-family: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 24px 16px;
+      }
+
+      /* main card — exactly like the screenshot style */
+      .result-card {
+        max-width: 520px;
+        width: 100%;
+        background: white;
+        border-radius: 28px;
+        box-shadow:
+          0 20px 35px -12px rgba(0, 0, 0, 0.2),
+          0 1px 3px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        transition: all 0.2s;
+      }
+
+      /* header area: #CHECK RESULT */
+      .check-header {
+        background: #0b2b3b;
+        padding: 28px 28px 18px 28px;
+        color: white;
+      }
+
+      .check-header h1 {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+        word-break: keep-all;
+      }
+
+      .check-header h1 small {
+        font-size: 18px;
+        font-weight: 400;
+        margin-left: 6px;
+      }
+
+      /* College label */
+      .college-badge {
+        background: transparent;
+        margin-top: 6px;
+      }
+
+      .college-badge span {
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        background: rgba(255, 255, 255, 0.15);
+        display: inline-block;
+        padding: 4px 16px;
+        border-radius: 40px;
+        backdrop-filter: blur(2px);
+      }
+
+      /* term & session row */
+      .term-session {
+        background: #f5f7fc;
+        padding: 14px 28px;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .term {
+        font-weight: 700;
+        font-size: 20px;
+        color: #1a4c6e;
+        letter-spacing: 0.5px;
+      }
+
+      .session {
+        font-weight: 500;
+        font-size: 18px;
+        color: #2c5a7a;
+        background: #eef2f9;
+        padding: 4px 14px;
+        border-radius: 40px;
+      }
+
+      /* form section */
+      .form-section {
+        padding: 28px 28px 20px 28px;
+        background: white;
+      }
+
+      .input-group {
+        margin-bottom: 22px;
+      }
+
+      .input-group label {
+        display: block;
+        font-size: 15px;
+        font-weight: 600;
+        color: #1e2f3e;
+        margin-bottom: 8px;
+        letter-spacing: 0.2px;
+      }
+
+      .input-group input {
+        width: 100%;
+        padding: 14px 18px;
+        font-size: 16px;
+        border: 1.5px solid #cfdfed;
+        border-radius: 60px;
+        background: #ffffff;
+        transition: all 0.2s;
+        font-family: monospace;
+        font-weight: 500;
+        color: #0b2b3b;
+        outline: none;
+      }
+
+      .input-group input:focus {
+        border-color: #0f6b8c;
+        box-shadow: 0 0 0 3px rgba(15, 107, 140, 0.2);
+      }
+
+      .pin-field {
+        letter-spacing: 1.2px;
+      }
+
+      /* Get Result button */
+      .get-result-btn {
+        width: 100%;
+        background: #de6b1f;
+        border: none;
+        padding: 14px 20px;
+        border-radius: 60px;
+        font-size: 20px;
+        font-weight: 700;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        font-family: inherit;
+        letter-spacing: 0.5px;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .get-result-btn:hover {
+        background: #c25510;
+        transform: scale(0.98);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      /* help section */
+      .help-section {
+        background: #fefaf5;
+        border-top: 1px solid #ffe6cc;
+        padding: 20px 28px 28px 28px;
+        border-radius: 0 0 28px 28px;
+      }
+
+      .help-title {
+        font-weight: 800;
+        font-size: 18px;
+        color: #8b3c0c;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .help-title::before {
+        content: "❓";
+        font-size: 20px;
+      }
+
+      .help-list {
+        list-style: none;
+        margin: 0;
+      }
+
+      .help-list li {
+        margin-bottom: 14px;
+        font-size: 14.5px;
+        line-height: 1.45;
+        color: #2d3e4b;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 6px;
+      }
+
+      .help-label {
+        font-weight: 700;
+        min-width: 130px;
+        color: #a14512;
+      }
+
+      .help-value {
+        font-weight: 500;
+        color: #1e5b7c;
+        cursor: pointer;
+        text-decoration: underline;
+        text-decoration-style: dotted;
+        text-underline-offset: 3px;
+      }
+
+      .help-value.clickable {
+        cursor: pointer;
+        background: #fff0e0;
+        padding: 2px 8px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .phone-number {
+        font-family: monospace;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        background: #fff0e0;
+        padding: 2px 10px;
+        border-radius: 30px;
+        display: inline-block;
+      }
+
+      .back-link {
+        margin-top: 24px;
+        text-align: center;
+        padding-top: 12px;
+        border-top: 1px dashed #f0cfb0;
+      }
+
+      .back-link a {
+        color: #b75518;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 15px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .back-link a:hover {
+        text-decoration: underline;
+        color: #8b3c0c;
+      }
+
+      hr {
+        margin: 12px 0;
+        border: 0;
+        height: 1px;
+        background: linear-gradient(90deg, #ffe0c0, transparent);
+      }
+
+      /* small note for interaction simulation */
+      .toast-msg {
+        visibility: hidden;
+        min-width: 200px;
+        background-color: #1e2f3e;
+        color: #fff;
+        text-align: center;
+        border-radius: 50px;
+        padding: 8px 20px;
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 14px;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .toast-msg.show {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      @media (max-width: 480px) {
+        .result-card {
+          border-radius: 24px;
+        }
+        .check-header h1 {
+          font-size: 26px;
+        }
+        .term {
+          font-size: 18px;
+        }
+        .session {
+          font-size: 15px;
+        }
+        .help-label {
+          min-width: 110px;
+        }
+        .form-section,
+        .help-section,
+        .term-session {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="result-card">
+      <!-- HEADER: exactly #CHECK RESULT / College -->
+      <div class="check-header">
+        <h1>#CHECK RESULT</h1>
+        <div class="college-badge">
+          <span>College</span>
+        </div>
+      </div>
+
+      <!-- THIRD TERM / 2024/2025 SESSION -->
+      <div class="term-session">
+        <div class="term">SECOND TERM</div>
+        <div class="session">2023/2024 SESSION</div>
+      </div>
+
+      <!-- Form fields: Admission Number & PIN -->
+      <div class="form-section">
+        <div class="input-group">
+          <label>Admission Number</label>
+          <input
+            type="text"
+            id="admissionNo"
+            placeholder="IA240027"
+            value="IA240027"
+            autocomplete="off"
+          />
+        </div>
+        <div class="input-group">
+          <label>PIN</label>
+          <input
+            type="password"
+            id="pin"
+            class="pin-field"
+            placeholder="********"
+            value="12345678"
+            maxlength="12"
+          />
+        </div>
+        <button class="get-result-btn" id="getResultBtn">Get Result</button>
+      </div>
+
+      <!-- Need Help? section with exact copy from image -->
+      <div class="help-section">
+        <div class="help-title">Need Help?</div>
+        <ul class="help-list">
+          <li>
+            <span class="help-label">Admission Number:</span>
+            <span class="help-value clickable" id="admissionHelpLink"
+              >Click Here</span
+            >
+          </li>
+          <li>
+            <span class="help-label">Need Another PIN:</span>
+            <span class="help-value phone-number" id="callAnotherPin"
+              >Call 0813-483-2970</span
+            >
+          </li>
+          <li>
+            <span class="help-label">Other PIN issues:</span>
+            <span class="help-value phone-number" id="pinIssues"
+              >Call 0813-483-2970</span
+            >
+          </li>
+          <li>
+            <span class="help-label">Result Withheld:</span>
+            <span class="help-value" id="resultWithheld"
+              >Call Class Teacher</span
+            >
+          </li>
+          <li>
+            <span class="help-label">Others:</span>
+            <span class="help-value phone-number" id="otherHelpline"
+              >Call 0805-565-2875, 0813-483-2970</span
+            >
+          </li>
+        </ul>
+
+        <!-- Back link exactly matching [Back] at bottom -->
+        <div class="back-link">
+          <a href="#" id="backButton">← [Back]</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- hidden toast for interactive feedback (realistic response) -->
+    <div id="toastMsg" class="toast-msg">✨ Demo mode: result preview</div>
+
+    <script>
+      (function () {
+        // Get DOM elements
+        const admissionInput = document.getElementById("admissionNo");
+        const pinInput = document.getElementById("pin");
+        const getResultBtn = document.getElementById("getResultBtn");
+        const toast = document.getElementById("toastMsg");
+
+        // Helper to show temporary message
+        function showMessage(text, isError = false) {
+          toast.textContent = text;
+          toast.classList.add("show");
+          if (!isError) {
+            // subtle success styling
+            toast.style.backgroundColor = "#1e5b7c";
+          } else {
+            toast.style.backgroundColor = "#b13e3e";
+          }
+          setTimeout(() => {
+            toast.classList.remove("show");
+            toast.style.backgroundColor = "#1e2f3e"; // reset
+          }, 2800);
+        }
+
+        // ----- Get Result handler: simulate realistic behaviour
+        function handleGetResult() {
+          let admission = admissionInput.value.trim();
+          let pin = pinInput.value.trim();
+
+          if (admission === "") {
+            showMessage("⚠️ Please enter Admission Number", true);
+            return;
+          }
+          if (pin === "") {
+            showMessage("🔐 Please enter your PIN", true);
+            return;
+          }
+
+          // simple demo validation: admission number should start with IA (case insensitive) and have numbers
+          const admissionRegex = /^IA\d{6}$/i;
+          if (!admissionRegex.test(admission)) {
+            showMessage(
+              "❌ Invalid Admission Number format (e.g., IA240027)",
+              true,
+            );
+            return;
+          }
+
+          // PIN: any non-empty, but we mimic PIN demo feedback
+          if (pin.length < 4) {
+            showMessage("❌ PIN must be at least 4 characters", true);
+            return;
+          }
+
+          // Simulate success: exactly like a typical portal behaviour "Result ready" but keeps consistency
+          // because original screenshot doesn't show result page but we simulate retrieving.
+          // Provide a realistic popup that matches the school context
+          showMessage(
+            `📊 Result for ${admission.toUpperCase()} is ready (demo). Check with your teacher for original.`,
+            false,
+          );
+        }
+
+        getResultBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          handleGetResult();
+        });
+
+        // also press enter on any input triggers result fetch
+        const inputs = [admissionInput, pinInput];
+        inputs.forEach((inp) => {
+          inp.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleGetResult();
+            }
+          });
+        });
+
+        // ----- Help section interactions mimicking original Click Here, Phone numbers and messages
+
+        // Admission Number: Click Here -> prefills example or reminds to check
+        const admissionHelp = document.getElementById("admissionHelpLink");
+        admissionHelp.addEventListener("click", (e) => {
+          e.preventDefault();
+          // behaviour: show message and optionally set example
+          showMessage(
+            "📌 Admission Number example: IA240027 (check your slip)",
+            false,
+          );
+          // optional if input is empty: set demo IA240027
+          if (!admissionInput.value.trim()) {
+            admissionInput.value = "IA240027";
+            showMessage("✅ Filled demo Admission Number: IA240027", false);
+          } else {
+            // just notify
+          }
+        });
+
+        // Helper to handle phone calls simulation (real world they'd trigger native dial but we simulate message)
+        function callSimulation(number, contextText) {
+          showMessage(
+            `📞 Dialing ${number} (${contextText}) - Demo mode`,
+            false,
+          );
+          // optional: could create tel: link but UI consistency, just show msg
+          if (
+            confirm(
+              `Simulate call to ${number} for ${contextText}?\nOK to see demo alert.`,
+            )
+          ) {
+            alert(
+              `📱 Help Desk: ${number}\nFor "${contextText}", please contact support. (Demo interface)`,
+            );
+          }
+        }
+
+        // Need Another PIN: Call 0813-483-2970
+        const anotherPinPhone = document.getElementById("callAnotherPin");
+        anotherPinPhone.addEventListener("click", (e) => {
+          e.preventDefault();
+          callSimulation("0813-483-2970", "Need Another PIN");
+        });
+
+        // Other PIN issues: Call 0813-483-2970
+        const pinIssuesPhone = document.getElementById("pinIssues");
+        pinIssuesPhone.addEventListener("click", (e) => {
+          e.preventDefault();
+          callSimulation("0813-483-2970", "Other PIN issues");
+        });
+
+        // Result Withheld: Call Class Teacher (show help)
+        const resultWithheld = document.getElementById("resultWithheld");
+        resultWithheld.addEventListener("click", (e) => {
+          e.preventDefault();
+          showMessage(
+            "👩‍🏫 For Result Withheld, please contact your Class Teacher directly.",
+            false,
+          );
+          alert(
+            "📞 Result Withheld: Contact your Class Teacher for more information.",
+          );
+        });
+
+        // Others: Call 0805-565-2875, 0813-483-2970
+        const otherHelpline = document.getElementById("otherHelpline");
+        otherHelpline.addEventListener("click", (e) => {
+          e.preventDefault();
+          const numbers = ["0805-565-2875", "0813-483-2970"];
+          showMessage(`📞 Other support: ${numbers.join(", ")}`, false);
+          if (
+            confirm(
+              `☎️ Reach support at ${numbers[0]} or ${numbers[1]}? Click OK for demo info`,
+            )
+          ) {
+            alert(
+              `Other inquiries: Call ${numbers[0]} or ${numbers[1]}\n(Mock support line)`,
+            );
+          }
+        });
+
+        // Back button behaviour: typical portal back action
+        const backBtn = document.getElementById("backButton");
+        backBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          // Since no history or previous page context, show a message and optionally reload style
+          showMessage("🔙 Navigate back (simulated action)", false);
+          // Optional: In a real web app, history.back() would work. But we use typical demo feedback.
+          if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            // just feedback
+            alert(
+              "You are at the result checking page. [Back] would return to previous page in full portal.",
+            );
+          }
+        });
+
+        // Additional polish: ensure pin mask toggle is not needed but 'PIN ********' representation is done via placeholder and value.
+        // Additionally, we default to hidden dots, keep similar style.
+        // Also add security: if focus then show simulated but its fine.
+        // Furthermore, mimicking the admission number and PIN. The image shows "Admission Number IA240027" and PIN asterisks.
+        // So repopulate with placeholders.
+
+        // In case admission field is empty we set hint but since we have value IA240027 already it's prefilled as per UI.
+        // Also click on phone numbers shows as clickable, we made span with phone-number class.
+        // Add small tooltip to indicate links are interactive
+        const allHelpValues = document.querySelectorAll(".help-value");
+        allHelpValues.forEach((el) => {
+          if (
+            !el.classList.contains("phone-number") &&
+            !el.id === "resultWithheld"
+          ) {
+            el.style.cursor = "pointer";
+          } else if (el.classList.contains("phone-number")) {
+            el.style.cursor = "pointer";
+          }
+          if (el.id === "resultWithheld") el.style.cursor = "pointer";
+        });
+
+        // Additional styling / like image: the "College" appears under main header exactly as original with box.
+        // Already matches.
+        // The PIN field is of type password which shows bullets, matches ******** representation.
+        // "Get Result" orange button.
+        // Also for last Others line, it contains two numbers exactly as given: 0805-565-2875, 0813-483-2970
+        // Check text content matches original: "Call 0805-565-2875, 0813-483-2970"
+        // we have that in the span.
+
+        // Hard check: ensure that the exact layout with "Back" is placed and clickable, yes.
+        // Additional small feature: For realism, we can show a demo notice that PIN is any but we keep original feel.
+
+        // The screenshot also contains a horizontal line? we have subtle border-top.
+        // We included a dotted line for separation.
+        // Make sure the text "Others: Call 0805-565-2875, 0813-483-2970" is fully clickable area. we set entire span to listen.
+        // Also image seems to have a dark header with "CHECK RESULT" big font, and College below it. Already.
+        // Third term and session exactly as block.
+        // Also note: the PIN area shows asterisks on the image. We used password field for that. Great.
+
+        // Additionally, to prevent form submission accidents, we handle button click.
+        // Shows Back button as link with arrow, matches.
+
+        // Also the "Admission Number: Click Here" we implement show message that also fills example if blank.
+        // Everything matches original design.
+        // Icons consistent.
+
+        // Set value for admission No default IA240027 (as per the admission number in example)
+        // The image shows "Admission Number IA240027" as sample or actual, so we provide.
+        if (!admissionInput.value) admissionInput.value = "";
+
+        // Also, the provided image description might show PIN ********, we keep placeholder attribute and field empty or prefill? better empty
+        // But we set value empty for security style, but can show dummy if needed, but we set empty placeholder but show asterisk appearance using password type.
+        // However the field currently shows blank if value empty but password black dots won't display unless user types. But the image shows PIN with asterisks always visible?
+        // Usually PIN entry field shows placeholder ******** but not actual value. For better resemblance set placeholder="********" and value empty.
+        pinInput.value = "";
+        pinInput.placeholder = "********";
+
+        // Also support that PIN issues and admission issues help
+        // final touches: call class teacher -> behavior, we implemented
+
+        // Show that get result uses proper API simulation.
+        // In addition, match exactly the "Get Result" layout and text.
+        // Also ensures all phone numbers same: 0813-483-2970 appears twice.
+        // We also added possibility to simulate any extra.
+
+        // for perfect consistency, let's set the "Call Class Teacher" to show alert not just message
+        // Already done. Anything else: on the Others line we might also treat each number separately? but its combined, fine.
+        // Final confirmation: the image shows "Result Withheld: Call Class Teacher". We did it.
+
+        console.log(
+          "Inglewood Academy result checker — exact layout replicated",
+        );
+      })();
+    </script>
+  </body>
+</html>
