@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher Portal</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body{font-family:Arial;background:#f4f6fb;padding:30px;max-width:700px;margin:auto}
+input{width:100%;padding:10px;margin:6px 0}
+button{padding:10px 15px;background:#0b8aa8;color:#fff;border:none;border-radius:6px;cursor:pointer}
+.card{background:#fff;padding:15px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+</style>
+</head>
+<body>
+
+<h1>Teacher Portal</h1>
+
+<input id="teacher" placeholder="Teacher Name">
+<input id="student" placeholder="Student Name">
+<input id="admission_no" placeholder="Admission Number (e.g. IA240027)">
+<input id="pin" placeholder="PIN (e.g. 12345678)">
+<input id="className" placeholder="Class">
+<input id="term" placeholder="Term">
+<input id="session" placeholder="Session">
+<input id="subject" placeholder="Subject">
+<input id="score" type="number" placeholder="Score">
+
+<button onclick="saveResult()">Save Result</button>
+
+<script>
+const SUPABASE_URL = 'https://qokqitcdupvyymiimday.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFva3FpdGNkdXB2eXltaWltZGF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwMjQxMzMsImV4cCI6MjA5NDYwMDEzM30.hdtCJuteB-TaGenDzPB3EMOZaEvtYFuszhfaGWUvXa8';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function grade(score){
+  score = Number(score);
+  if(score >= 70) return 'A';
+  if(score >= 60) return 'B';
+  if(score >= 50) return 'C';
+  if(score >= 45) return 'D';
+  return 'F';
+}
+
+async function saveResult(){
+  const score = Number(document.getElementById('score').value);
+
+  const item = {
+    teacher: document.getElementById('teacher').value.trim(),
+    student: document.getElementById('student').value.trim(),
+    admission_no: document.getElementById('admission_no').value.trim(),
+    pin: document.getElementById('pin').value.trim(),
+    className: document.getElementById('className').value.trim(),
+    term: document.getElementById('term').value.trim(),
+    session: document.getElementById('session').value.trim(),
+    subject: document.getElementById('subject').value.trim(),
+    score: score,
+    grade: grade(score)
+  };
+
+  const { error } = await supabase.from('results').insert([item]);
+
+  if(error){
+    alert(error.message);
+    return;
+  }
+
+  alert('Result saved successfully');
+}
+</html>

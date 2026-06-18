@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full School Portal System</title>
+<style>
+body{font-family:Arial;background:#f4f6fb;margin:0;padding:20px}
+
+h1{text-align:center;color:#2c3e50}
+
+.nav{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+
+.nav button{
+  padding:10px 15px;
+  border:none;
+  background:#0b8aa8;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.section{
+  display:none;
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.08);
+}
+
+input{
+  padding:10px;
+  margin:5px 0;
+  width:100%;
+}
+
+button.action{
+  margin-top:10px;
+  padding:10px;
+  background:#0b8aa8;
+  color:white;
+  border:none;
+  border-radius:8px;
+}
+
+.card{
+  border:1px solid #eee;
+  padding:10px;
+  margin:8px 0;
+  border-radius:8px;
+}
+</style>
+</head>
+<body>
+
+<h1>School Portal System</h1>
+
+<div class="nav">
+  <button onclick="show('teacher')">Teacher</button>
+  <button onclick="show('admin')">Admin</button>
+  <button onclick="show('student')">Student</button>
+</div>
+
+<!-- TEACHER -->
+<div id="teacher" class="section">
+  <h2>Teacher Login</h2>
+  <input id="tName" placeholder="Teacher Name">
+  <input id="tPass" type="password" placeholder="Password">
+  <button class="action" onclick="teacherLogin()">Login</button>
+
+  <div id="teacherPanel" style="display:none">
+    <h3>Upload Result</h3>
+
+    <input id="student" placeholder="Student Name">
+    <input id="className" placeholder="Class">
+    <input id="term" placeholder="Term">
+    <input id="session" placeholder="Session">
+    <input id="subject" placeholder="Subject">
+    <input id="score" type="number" placeholder="Score">
+
+    <button class="action" onclick="saveResult()">Save</button>
+
+    <h3>Your Results</h3>
+    <div id="teacherResults"></div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin" class="section">
+  <h2>Admin Login</h2>
+  <input id="aEmail" placeholder="Admin Email">
+  <input id="aPass" type="password" placeholder="Password">
+  <button class="action" onclick="adminLogin()">Login</button>
+
+  <div id="adminPanel" style="display:none">
+    <h3>All Results</h3>
+    <div id="allResults"></div>
+  </div>
+</div>
+
+<!-- STUDENT -->
+<div id="student" class="section">
+  <h2>Student Portal</h2>
+  <input id="sName" placeholder="Student Name">
+  <input id="sClass" placeholder="Class">
+  <button class="action" onclick="viewResult()">View Result</button>
+
+  <div id="studentResults"></div>
+</div>
+
+<script>
+let currentTeacher = null;
+let results = JSON.parse(localStorage.getItem('results')||'[]');
+
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.style.display='none');
+  document.getElementById(id).style.display='block';
+}
+
+function grade(score){
+  if(score>=70) return 'A';
+  if(score>=60) return 'B';
+  if(score>=50) return 'C';
+  if(score>=45) return 'D';
+  return 'F';
+}
+
+// TEACHER
+function teacherLogin(){
+  const n=document.getElementById('tName').value;
+  const p=document.getElementById('tPass').value;
+  if(!n||!p) return alert('fill');
+
+  currentTeacher=n;
+  document.getElementById('teacherPanel').style.display='block';
+  loadTeacher();
+}
+
+function saveResult(){
+  const item={
+    teacher:currentTeacher,
+    student:student.value,
+    className:className.value,
+    term:term.value,
+    session:session.value,
+    subject:subject.value,
+    score:Number(score.value),
+    grade:grade(score.value)
+  };
+
+async function loadResults(){
+  const res = await fetch("http://localhost:3000/results");
+  results = await res.json();
+  renderResults();
+}
+async function saveResult(){
+  const item = {
+    teacher: currentTeacher,
+    student: student.value,
+    subject: subject.value,
+    score: Number(score.value),
+    grade: grade(score.value)
+  };
+
+  await fetch("http://localhost:3000/results", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(item)
+  });
+
+  loadResults();
+}async function deleteResult(index){
+  await fetch("http://localhost:3000/results", {
+    method: "DELETE",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ index })
+  });
+
+  loadResults();
+}}
+
+function loadTeacher(){
+  const box=document.getElementById('teacherResults');
+  box.innerHTML='';
+
+  results.filter(r=>r.teacher===currentTeacher)
+  .forEach(r=>{
+    box.innerHTML+=`<div class='card'>${r.student} - ${r.subject} = ${r.score} (${r.grade})</div>`;
+  });
+}
+
+// ADMIN
+function adminLogin(){
+  const email=aEmail.value;
+  const pass=aPass.value;
+
+  if(email==='admin@school.com' && pass==='1234'){
+    document.getElementById('adminPanel').style.display='block';
+    loadAdmin();
+  } else alert('wrong');
+}
+
+function loadAdmin(){
+  const box=document.getElementById('allResults');
+  box.innerHTML='';
+
+  results.forEach(r=>{
+    box.innerHTML+=`<div class='card'>${r.teacher} | ${r.student} | ${r.subject} = ${r.score} (${r.grade})</div>`;
+  });
+}
+
+// STUDENT
+function viewResult(){
+  const n=sName.value;
+  const c=sClass.value;
+
+  const box=document.getElementById('studentResults');
+  box.innerHTML='';
+
+  const res=results.filter(r=>r.student===n && r.className===c);
+
+  if(res.length===0) return box.innerHTML='No result found';
+
+  let total=0;
+
+  res.forEach(r=>{
+    total+=r.score;
+    box.innerHTML+=`<div class='card'>${r.subject}: ${r.score} (${r.grade})</div>`;
+  });
+
+  box.innerHTML+=`<h3>Average: ${(total/res.length).toFixed(2)}</h3>`;
+}
+</script>
+
+</body>
+</html>
